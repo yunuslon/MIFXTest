@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {Gap, Header, Card} from './components';
+import {Gap, Header, Card, Skeleton} from './components';
 import {Category, Login, Product} from './Service';
 
 const App = () => {
@@ -24,6 +24,15 @@ const App = () => {
       Product(Token, e => setProduct(e));
     }
   }, [Token]);
+  var tmpCatgory = [];
+  var tmpProduct = [];
+  for (var i = 0; i <= 5; i++) {
+    tmpCatgory.push(<Skeleton type={'cardLabel'} key={i} />);
+  }
+
+  for (var i = 0; i <= 6; i++) {
+    tmpProduct.push(<Skeleton key={i} />);
+  }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -32,33 +41,37 @@ const App = () => {
       <Gap height={30} />
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.conCategory}>
-          {_Category.map((d, i) => {
-            return (
-              <TouchableOpacity key={i} style={styles.item}>
-                <Text style={styles.itemTxt}>{d.name}</Text>
-              </TouchableOpacity>
-            );
-          })}
+          {_Category.length != 0
+            ? _Category.map((d, i) => {
+                return (
+                  <TouchableOpacity key={i} style={styles.item}>
+                    <Text style={styles.itemTxt}>{d.name}</Text>
+                  </TouchableOpacity>
+                );
+              })
+            : tmpCatgory}
         </View>
       </ScrollView>
       <Gap height={20} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          {_Product.map((d, i) => {
-            return (
-              <Card
-                key={i}
-                url={d.image}
-                fav={d.isFav}
-                stock={d.out_of_stock}
-                newProd={d.new}
-                name={d.name}
-                price={d.price}
-                disk={d.off}
-                rating={d.rating}
-              />
-            );
-          })}
+          {_Product.length != 0
+            ? _Product.map((d, i) => {
+                return (
+                  <Card
+                    key={i}
+                    url={d.image}
+                    fav={d.isFav}
+                    stock={d.out_of_stock}
+                    newProd={d.new}
+                    name={d.name}
+                    price={d.price}
+                    disk={d.off}
+                    rating={d.rating}
+                  />
+                );
+              })
+            : tmpProduct}
         </View>
       </ScrollView>
     </SafeAreaView>
